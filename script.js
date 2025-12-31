@@ -313,9 +313,9 @@
       const user = p.userAnswer===null?'<em>—</em>':p.userAnswer;
       const ok = p.userAnswer===p.answer;
       if(ok){
-        return `<div><span class="column-short">${i+1}.</span> <span class="column-long">${p.a}×${p.b} = ${p.answer}</span> <span class="column">✅</span></div>`;
+        return `<div><span class="short-column">${i+1}.</span> <span class="long-column">${p.a}×${p.b} = ${p.answer}</span> <span class="column">✅</span></div>`;
       } else {
-        return `<div><span class="column-short">${i+1}.</span> <span class="column-long">${p.a}×${p.b} = ${user}</span> <span class="column">❌</span> <span class="column">${p.answer}</span></div>`;
+        return `<div><span class="short-column">${i+1}.</span> <span class="long-column">${p.a}×${p.b} = ${user}</span> <span class="column">❌</span> <span class="column">${p.answer}</span></div>`;
       }
     }).join('');
 
@@ -325,7 +325,7 @@
     // compute score and label
     const score = problems.reduce((acc,p)=> acc + (p.userAnswer===p.answer?1:0), 0);
     let label = '';
-    if(score < 10) label = 'Il faut t\'entrainer';
+    if(score < 10) label = 'il faut t\'entrainer';
     else if(score < 14) label = 'Pas mal';
     else if(score < 18) label = 'Bien joué';
     else if(score < 20) label = 'Bravo';
