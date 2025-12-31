@@ -313,9 +313,9 @@
       const user = p.userAnswer===null?'<em>—</em>':p.userAnswer;
       const ok = p.userAnswer===p.answer;
       if(ok){
-        return `<div>${i+1}. ${p.a}×${p.b} = ${p.answer} ✅</div>`;
+        return `<div><span class="column">${i+1}.</span> <span class="column">${p.a}×${p.b} = ${p.answer}</span> <span class="column">✅</span></div>`;
       } else {
-        return `<div>${i+1}. ${p.a}×${p.b} = ${user} ❌ ${p.answer}</div>`;
+        return `<div><span class="column">${i+1}.</span> <span class="column">${p.a}×${p.b} = ${user}</span> <span class="column">❌</span> <span class="column">${p.answer}</span></div>`;
       }
     }).join('');
 
@@ -381,6 +381,7 @@
           const digit = b.dataset.digit;
           if(inputBuffer.length<3) inputBuffer += digit;
           renderInput();
+          playClick();
         }
       });
       keypadEl.appendChild(b);
@@ -429,7 +430,6 @@
       fail.className = 'fail-shake';
       fail.textContent = pendingResult.title;
       animContent.appendChild(fail);
-      playFail();
     }
 
     // after 3s show pending result
