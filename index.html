@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Multiplication Sprint</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <main id="setup" class="screen">
+      <p class="lead">Sélectionnez les tables à pratiquer</p>
+      <div id="tables" class="tables"></div>
+      <div class="controls">
+        <button id="startBtn" class="primary" disabled>Démarrer</button>
+      </div>
+      <section id="treasure" class="treasure">
+        <h2>Coffre au trésor</h2>
+        <div id="cards" class="cards"></div>
+      </section>
+      <div class="treasure-reset">
+        <button id="resetCardsBtn" class="reset-btn">Réinitialiser</button>
+      </div>
+        <!-- On-screen confirmation modal for resetting cards -->
+        <div id="resetModal" class="modal hidden" aria-hidden="true">
+          <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+            <p id="resetTitle">Confirmer la réinitialisation ? Toutes les cartes seront verrouillées à nouveau.</p>
+            <div class="modal-actions">
+              <button id="confirmResetBtn" class="primary">Oui</button>
+              <button id="cancelResetBtn">Non</button>
+            </div>
+          </div>
+        </div>
+    </main>
+
+    <section id="game" class="screen hidden">
+      <div class="hud">
+        <div id="timer" class="chip">60s</div>
+        <div id="progress" class="chip">0 / 20</div>
+      </div>
+      <div id="problem" class="problem">— × —</div>
+      <div id="answerDisplay" class="answer"> </div>
+      <div id="keypad" class="keypad"></div>
+    </section>
+
+    <section id="result" class="screen hidden">
+      <h2 id="resultTitle"></h2>
+      <div class="result-actions">
+        <button id="retryBtn">Rejouer</button>
+        <button id="backSetupBtn">Retour</button>
+      </div>
+      <div id="resultDetails" class="result-details"></div>
+    </section>
+    <section id="animation" class="screen hidden animation-screen">
+      <div id="animationContent" class="animation-content"></div>
+    </section>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
