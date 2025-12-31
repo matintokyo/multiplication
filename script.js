@@ -23,6 +23,10 @@
   const confirmResetBtn = $('confirmResetBtn');
   const cancelResetBtn = $('cancelResetBtn');
 
+  // Global variables
+  const NUM_PROBLEMS = 20
+  const TIME_LIMIT = 60
+  
   let selectedTables = new Set();
   let problems = [];
   let current = 0;
@@ -31,14 +35,25 @@
   let inputBuffer = '';
   // cartes collectionnables (emoji). Noms en français.
   const CARDS = [
-    {id:'c1',name:'Étoile d\'or',emoji:'🌟',color:'#f59e0b'},
+    {id:'c1',name:'Étoile',emoji:'🌟',color:'#f59e0b'},
     {id:'c2',name:'Fusée',emoji:'🚀',color:'#06b6d4'},
     {id:'c3',name:'Trésor',emoji:'🧰',color:'#ef4444'},
     {id:'c4',name:'Médaille',emoji:'🏅',color:'#10b981'},
     {id:'c5',name:'Couronne',emoji:'👑',color:'#f97316'},
     {id:'c6',name:'Licorne',emoji:'🦄',color:'#8b5cf6'},
     {id:'c7',name:'Diamant',emoji:'💎',color:'#3b82f6'},
-    {id:'c8',name:'Planète',emoji:'🪐',color:'#06b6d4'}
+    {id:'c8',name:'Planète',emoji:'🪐',color:'#06b6d4'},
+    {id:'c9',name:'Niji',emoji:'🌈',color:'#22c55e'},
+    {id:'c10',name:'Éclair',emoji:'⚡',color:'#f59e0b'},
+    {id:'c11',name:'Cœur',emoji:'❤️',color:'#ef4444'},
+    {id:'c12',name:'Livre',emoji:'📚',color:'#3b82f6'},
+    {id:'c13',name:'Potion',emoji:'🧪',color:'#a78bfa'},
+    {id:'c14',name:'Écureuil',emoji:'🐿️',color:'#a3a3a3'},
+    {id:'c15',name:'Papillon',emoji:'🦋',color:'#ec4899'},
+    {id:'c16',name:'Montagne',emoji:'🏔️',color:'#64748b'},
+    {id:'c17',name:'Feu',emoji:'🔥',color:'#f97316'},
+    {id:'c18',name:'Lune',emoji:'🌙',color:'#94a3b8'},
+
   ];
   const STORAGE_KEY = 'multiplication_unlocked_cards_v1';
   let unlocked = new Set();
@@ -163,7 +178,7 @@
     const out = [];
     const orientation = new Map();
     let idx = 0;
-    while(out.length < 20){
+    while(out.length < NUM_PROBLEMS){
       const p = pool[idx % pool.length];
       // choose orientation once per unordered key and reuse for repeats
       if(!orientation.has(p.key)){
@@ -195,21 +210,21 @@
     setupEl.classList.add('hidden');
     gameEl.classList.remove('hidden');
     resultEl.classList.add('hidden');
-    timerEl.textContent = '60s';
+    timerEl.textContent = TIME_LIMIT + 's';
     timerId = setInterval(updateTimer,100);
   }
 
   function updateTimer(){
     const elapsed = (performance.now()-startTime)/1000;
-    const left = Math.max(0,60-elapsed);
+    const left = Math.max(0,TIME_LIMIT-elapsed);
     timerEl.textContent = Math.ceil(left)+ 's';
-    if(elapsed>=60){
+    if(elapsed>=TIME_LIMIT){
       endGame(true);
     }
   }
 
   function updateProgress(){
-    progressEl.textContent = (current) + ' / 20';
+    progressEl.textContent = (current) + ' / ' + NUM_PROBLEMS;
     updateTrack();
   }
 
@@ -226,12 +241,12 @@
     trackEl.innerHTML = '';
     const inner = document.createElement('div');
     inner.className = 'progress-track-inner';
-    // create 20 obstacle elements
-    for(let i=0;i<20;i++){
+    // create obstacle elements
+    for(let i=0;i<NUM_PROBLEMS;i++){
       const o = document.createElement('div');
       o.className = 'track-obstacle';
       o.dataset.index = i;
-      if(i === 19){
+      if(i === NUM_PROBLEMS - 1){
         o.classList.add('track-goal');
       }
       inner.appendChild(o);
@@ -306,7 +321,7 @@
       // if not all answered but time didn't run out, treat unanswered as incorrect
     }
     const lines = [];
-    if(!timeOk || timeUp) lines.push(`<div><strong>Temps :</strong> ${elapsed.toFixed(2)}s (limite 60s)</div>`);
+    if(!timeOk || timeUp) lines.push(`<div><strong>Temps :</strong> ${elapsed.toFixed(2)}s (limite ${TIME_LIMIT}s)</div>`);
 
     // Build full problems log formatted: errors show attempted answer then ❌ then correct; correct show ✅
     const problemsList = problems.map((p,i)=>{
@@ -325,14 +340,14 @@
     // compute score and label
     const score = problems.reduce((acc,p)=> acc + (p.userAnswer===p.answer?1:0), 0);
     let label = '';
-    if(score < 10) label = 'il faut t\'entrainer';
-    else if(score < 14) label = 'Pas mal';
-    else if(score < 18) label = 'Bien joué';
-    else if(score < 20) label = 'Bravo';
+    if(score < NUM_PROBLEMS/2) label = 'il faut t\'entrainer';
+    else if(score < NUM_PROBLEMS * 0.7) label = 'Pas mal';
+    else if(score < NUM_PROBLEMS * 0.9) label = 'Bien joué';
+    else if(score < NUM_PROBLEMS) label = 'Bravo';
     else label = 'Parfait';
 
-    const head = (!timeOk || timeUp) ? `<div><strong>Temps :</strong> ${elapsed.toFixed(2)}s (limite 60s)</div>` : '';
-    pendingResult.title = `${score} / 20 — ${label}`;
+    const head = (!timeOk || timeUp) ? `<div><strong>Temps :</strong> ${elapsed.toFixed(2)}s (limite ${TIME_LIMIT}s)</div>` : '';
+    pendingResult.title = `${score} / ${NUM_PROBLEMS} — ${label}`;
 
 
     if(success){
@@ -349,7 +364,7 @@
     // Show animation for 3 seconds then show result
     gameEl.classList.add('hidden');
     showAnimation(success, pendingResult);
-    progressEl.textContent = '20 / 20';
+    progressEl.textContent = NUM_PROBLEMS + ' / ' + NUM_PROBLEMS;
   }
 
   function makeKeypad(){
