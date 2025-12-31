@@ -25,7 +25,7 @@
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .key{padding:14px;font-size:18px;border-radius:10px;background:#fff;border:1px solid #e2e8f0;text-align:center}
 .key.wide{grid-column:span 2}
-.result-details{margin-top:12px;background:#fff;padding:12px;border-radius:10px;border:1px solid #e2e8f0}
+.result-details{margin-top:12px;background:#fff;padding:12px;border-radius:10px;border:1px solid #e2e8f0;font-weight: 500;}
 .result-actions{display:flex;gap:8px;margin-top:12px}
 button:active{transform:translateY(1px)}
 @media(min-width:640px){body{padding:24px}.screen{margin-top:48px}}
@@ -44,7 +44,7 @@ button:active{transform:translateY(1px)}
 	.card .emoji{font-size:20px}
 	.problem{font-size:26px}
 	.answer{font-size:20px}
-	.key{padding:10px;font-size:16px}
+	.key{padding:10px;font-size:16px;}
 }
 
 /* Animation overlay */
