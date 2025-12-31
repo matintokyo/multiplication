@@ -313,9 +313,9 @@
       const user = p.userAnswer===null?'<em>—</em>':p.userAnswer;
       const ok = p.userAnswer===p.answer;
       if(ok){
-        return `<div><span class="column">${i+1}.</span> <span class="column">${p.a}×${p.b} = ${p.answer}</span> <span class="column">✅</span></div>`;
+        return `<div><span class="column-short">${i+1}.</span> <span class="column-long">${p.a}×${p.b} = ${p.answer}</span> <span class="column">✅</span></div>`;
       } else {
-        return `<div><span class="column">${i+1}.</span> <span class="column">${p.a}×${p.b} = ${user}</span> <span class="column">❌</span> <span class="column">${p.answer}</span></div>`;
+        return `<div><span class="column-short">${i+1}.</span> <span class="column-long">${p.a}×${p.b} = ${user}</span> <span class="column">❌</span> <span class="column-long">${p.answer}</span></div>`;
       }
     }).join('');
 

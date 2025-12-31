@@ -26,6 +26,8 @@
 .key{padding:14px;font-size:18px;border-radius:10px;background:#fff;border:1px solid #e2e8f0;text-align:center}
 .key.wide{grid-column:span 2}
 .column{display: inline-block;width: 20%;text-align: left;}
+.short-column{display: inline-block;width: 10%;text-align: left;}
+.long-column{display: inline-block;width: 30%;text-align: left;}
 .result-details{margin-top:12px;background:#fff;padding:12px;border-radius:10px;border:1px solid #e2e8f0;font-weight: 500;}
 .result-actions{display:flex;gap:8px;margin-top:12px}
 button:active{transform:translateY(1px)}
