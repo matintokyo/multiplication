@@ -59,6 +59,11 @@ button:active{transform:translateY(1px)}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
 .modal .primary{padding:8px 12px;border-radius:8px;display:inline-block;width:auto;background:var(--accent);color:#fff;border:0}
 .modal button{border:1px solid #e2e8f0;background:#fff;padding:8px 10px;border-radius:8px}
+.game-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:0;font-weight:700;font-size:16px;box-shadow:0 6px 18px rgba(2,6,23,0.08);cursor:pointer}
+.game-btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff}
+.game-btn.secondary{background:#fff;border:1px solid #e6edf7;color:var(--text)}
+.game-btn:active{transform:translateY(1px)}
+.result-actions{display:flex;gap:10px;justify-content:center;margin-bottom:10px}
 .animation-content{background:transparent;padding:20px;border-radius:12px;text-align:center;color:var(--text)}
 .confetti{position:fixed;top:-10%;font-size:26px;pointer-events:none;opacity:0.95;animation:fall 2600ms linear forwards}
 @keyframes fall{to{transform:translateY(120vh) rotate(360deg);opacity:1}}
@@ -70,3 +75,20 @@ button:active{transform:translateY(1px)}
 /* Unlock pulse animation for card */
 .card-unlock{animation:unlockPulse 1200ms cubic-bezier(.2,.8,.2,1);box-shadow:0 8px 24px rgba(59,130,246,0.18);transform-origin:center}
 @keyframes unlockPulse{0%{transform:scale(0.6);filter:drop-shadow(0 0 0 rgba(0,0,0,0))}40%{transform:scale(1.18);filter:drop-shadow(0 8px 20px rgba(59,130,246,0.18))}70%{transform:scale(0.98)}100%{transform:scale(1)}}
+
+/* Progress track: small horizontal strip with 20 obstacles and a ninja that moves across */
+.progress-track{width:100%;height:56px;display:block;background:linear-gradient(90deg,rgba(0,0,0,0.02),transparent);border-radius:8px;padding:6px 8px;box-sizing:border-box;margin-bottom:8px}
+.progress-track-inner{position:relative;height:100%;display:flex;align-items:center}
+.track-obstacle{width:2.5%;min-width:6px;height:14px;background:#e2e8f0;border-radius:4px;margin:0 1%;opacity:0.95;transition:background .28s, transform .28s;display:flex;align-items:center;justify-content:center;font-size:12px}
+.track-obstacle.cleared-correct{background:var(--accent);transform:translateY(-4px)}
+.track-obstacle.cleared-wrong{background:#ef4444;transform:translateY(-4px)}
+.track-obstacle.track-goal{background:transparent}
+.track-obstacle.track-goal::after{content:'🏆';font-size:18px}
+.ninja{position:absolute;top:6px;transform:translate(-50%,0);font-size:22px;transition:left 360ms cubic-bezier(.22,.9,.32,1), transform .25s;will-change:left}
+.ninja.jump{transform:translate(-50%,-18px) scale(1.06)}
+
+@media(max-width:420px){
+	.progress-track{height:48px}
+	.ninja{font-size:20px}
+}
+

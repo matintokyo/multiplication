@@ -10,6 +10,7 @@
   const problemEl = $('problem');
   const answerDisplay = $('answerDisplay');
   const keypadEl = $('keypad');
+  const trackEl = $('progressTrack');
   const resultTitle = $('resultTitle');
   const resultDetails = $('resultDetails');
   const retryBtn = $('retryBtn');
@@ -188,6 +189,8 @@
     current = 0; inputBuffer='';
     startTime = performance.now();
     updateProgress();
+    renderProgressTrack();
+    updateTrack();
     showProblem();
     setupEl.classList.add('hidden');
     gameEl.classList.remove('hidden');
@@ -207,6 +210,7 @@
 
   function updateProgress(){
     progressEl.textContent = (current) + ' / 20';
+    updateTrack();
   }
 
   function showProblem(){
@@ -215,6 +219,63 @@
     inputBuffer = '';
     renderInput();
     updateProgress();
+  }
+
+  function renderProgressTrack(){
+    if(!trackEl) return;
+    trackEl.innerHTML = '';
+    const inner = document.createElement('div');
+    inner.className = 'progress-track-inner';
+    // create 20 obstacle elements
+    for(let i=0;i<20;i++){
+      const o = document.createElement('div');
+      o.className = 'track-obstacle';
+      o.dataset.index = i;
+      if(i === 19){
+        o.classList.add('track-goal');
+      }
+      inner.appendChild(o);
+    }
+    // ninja element
+    const ninja = document.createElement('div');
+    ninja.className = 'ninja';
+    ninja.id = 'trackNinja';
+    ninja.textContent = '🥷';
+    inner.appendChild(ninja);
+    trackEl.appendChild(inner);
+  }
+
+  function updateTrack(){
+    if(!trackEl) return;
+    const ninja = trackEl.querySelector('#trackNinja');
+    const obstacles = Array.from(trackEl.querySelectorAll('.track-obstacle'));
+    if(!ninja || obstacles.length===0) return;
+    // position ninja centered over the appropriate obstacle square
+    const inner = trackEl.querySelector('.progress-track-inner');
+    if(!inner) return;
+    const total = obstacles.length;
+    // choose target obstacle index (cap to last index)
+    const targetIdx = Math.min(current, total - 1);
+    const target = obstacles[targetIdx];
+    // compute center of target relative to inner container and set left as percent
+    const innerRect = inner.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    const centerX = targetRect.left + targetRect.width / 2;
+    const leftPx = centerX - innerRect.left;
+    const pct = innerRect.width > 0 ? Math.max(0, Math.min(100, (leftPx / innerRect.width) * 100)) : 0;
+    ninja.style.left = pct + '%';
+    // mark cleared obstacles based on correctness
+    obstacles.forEach((el,i)=>{
+      el.classList.remove('cleared-correct','cleared-wrong');
+      const p = problems[i];
+      if(p && p.userAnswer !== null && typeof p.userAnswer !== 'undefined'){
+        if(p.userAnswer === p.answer){ el.classList.add('cleared-correct'); }
+        else { el.classList.add('cleared-wrong'); }
+      }
+    });
+    // small jump effect when just answered
+    ninja.classList.add('jump');
+    setTimeout(()=> ninja.classList.remove('jump'), 380);
   }
 
   function renderInput(){
@@ -261,24 +322,28 @@
     const success = allCorrect && timeOk && !timeUp;
     let pendingResult = {title:'', html:''};
 
+    // compute score and label
+    const score = problems.reduce((acc,p)=> acc + (p.userAnswer===p.answer?1:0), 0);
+    let label = '';
+    if(score < 10) label = 'Il faut t\'entrainer';
+    else if(score < 14) label = 'Pas mal';
+    else if(score < 18) label = 'Bien joué';
+    else if(score < 20) label = 'Bravo';
+    else label = 'Parfait';
+
+    const head = (!timeOk || timeUp) ? `<div><strong>Temps :</strong> ${elapsed.toFixed(2)}s (limite 60s)</div>` : '';
+    pendingResult.title = `${score} / 20 — ${label}`;
+
+
     if(success){
-      const unlockedCard = unlockCard();
-      const head = `<div><strong>Terminé en :</strong> ${elapsed.toFixed(2)}s</div>`;
-      const cardMsg = unlockedCard ? `<div><strong>Nouvelle carte débloquée :</strong> ${unlockedCard.emoji} ${unlockedCard.name}</div>` : `<div><strong>Toutes les cartes sont débloquées !</strong></div>`;
-      pendingResult.title = '🎉 Bravo !';
-      pendingResult.html = [head, cardMsg, `<div><strong>Problèmes :</strong>${problemsList}</div>`].join('');
-      pendingResult.unlockedCard = unlockedCard ? unlockedCard.id : null;
+        const unlockedCard = unlockCard();
+        const cardMsg = unlockedCard ? `<div><strong>Nouvelle carte débloquée :</strong> ${unlockedCard.emoji} ${unlockedCard.name}</div>` : `<div><strong>Toutes les cartes sont débloquées !</strong></div>`;
+        pendingResult.html = [head, cardMsg, `<div><strong>Problèmes :</strong>${problemsList}</div>`].join('');
+        pendingResult.unlockedCard = unlockedCard ? unlockedCard.id : null;
     } else {
-      const head = (!timeOk || timeUp) ? `<div><strong>Temps :</strong> ${elapsed.toFixed(2)}s (limite 60s)</div>` : '';
-      const errors = problems.map((p,i)=>({i,p})).filter(o=>o.p.userAnswer!==o.p.answer);
-      let errHtml = '';
-      if(errors.length){
-        const list = errors.map(e=>`<div>${e.i+1}. ${e.p.a}×${e.p.b} = ${e.p.answer} — vous: ${e.p.userAnswer===null?'<em>pas de réponse</em>':e.p.userAnswer}</div>`).join('');
-        errHtml = `<div><strong>Erreurs :</strong>${list}</div>`;
-      }
-      pendingResult.title = 'Pas cette fois';
-      pendingResult.html = [head, errHtml, `<div><strong>Problèmes :</strong>${problemsList}</div>`].join('');
-      pendingResult.unlockedCard = null;
+        pendingResult.unlockedCard = null;
+        const errors = problems.map((p,i)=>({i,p})).filter(o=>o.p.userAnswer!==o.p.answer);
+        pendingResult.html = [head, `<div><strong>Problèmes :</strong>${problemsList}</div>`].join('');
     }
 
     // Show animation for 3 seconds then show result
@@ -342,7 +407,7 @@
     if(success){
       const burst = document.createElement('div');
       burst.className = 'celebrate-burst';
-      burst.textContent = '🎉';
+      burst.textContent = pendingResult.title;
       animContent.appendChild(burst);
       // create confetti pieces
       const confettiEmojis = ['🎊','✨','🎈','🌟','🪄'];
@@ -362,7 +427,7 @@
       // failure animation: big shake
       const fail = document.createElement('div');
       fail.className = 'fail-shake';
-      fail.textContent = '❌';
+      fail.textContent = pendingResult.title;
       animContent.appendChild(fail);
       playFail();
     }

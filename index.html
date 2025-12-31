@@ -34,6 +34,7 @@
     </main>
 
     <section id="game" class="screen hidden">
+      <div id="progressTrack" class="progress-track" aria-hidden="true"></div>
       <div class="hud">
         <div id="timer" class="chip">60s</div>
         <div id="progress" class="chip">0 / 20</div>
@@ -46,8 +47,8 @@
     <section id="result" class="screen hidden">
       <h2 id="resultTitle"></h2>
       <div class="result-actions">
-        <button id="retryBtn">Rejouer</button>
-        <button id="backSetupBtn">Retour</button>
+        <button id="retryBtn" class="game-btn primary">🔁 Rejouer</button>
+        <button id="backSetupBtn" class="game-btn secondary">⬅️ Retour</button>
       </div>
       <div id="resultDetails" class="result-details"></div>
     </section>
