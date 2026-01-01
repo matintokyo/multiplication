@@ -1,5 +1,5 @@
 
-# Sprimt de Multiplications
+# Sprint de Multiplications
 
 Jeu mobile simple pour s'entraîner aux tables de multiplication (HTML/CSS/JS). Ouvrez `index.html` dans un navigateur ou hébergez sur GitHub Pages.
 
