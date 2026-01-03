@@ -405,7 +405,7 @@
     else label = t('scores.perfect');
 
     const head = (!timeOk || timeUp) ? `<div><strong>${t('result.timeLabel')}</strong> ${elapsed.toFixed(2)}s (limite ${TIME_LIMIT}s)</div>` : '';
-    pendingResult.title = `${score} / ${NUM_PROBLEMS} ${t('result.title')} ${label}`;
+    pendingResult.title = `${score} / ${NUM_PROBLEMS} — ${label}`;
 
 
     if(success){
