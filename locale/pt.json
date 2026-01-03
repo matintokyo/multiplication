@@ -1,0 +1,58 @@
+{
+  "app": {
+    "title": "Sprint de Multiplicação",
+    "description": "Jogo para praticar tabuadas. Selecione as tabelas e responda 20 perguntas em um minuto."
+  },
+  "setup": {
+    "title": "Selecione as tabelas para praticar",
+    "startButton": "Iniciar",
+    "treasureTitle": "Baú do Tesouro",
+    "resetButton": "Redefinir"
+  },
+  "game": {
+    "timer": "s",
+    "progress": " / ",
+    "problem": "— × —"
+  },
+  "result": {
+    "title": " /  — ",
+    "retryButton": "🔁 Jogar Novamente",
+    "backButton": "⬅️ Voltar",
+    "timeLabel": "Tempo :",
+    "problemsLabel": "Problemas :",
+    "newCardLabel": "Novo cartão desbloqueado :",
+    "allCardsLabel": "Todos os cartões estão desbloqueados!"
+  },
+  "cards": {
+    "c1": "Estrela",
+    "c2": "Foguete",
+    "c3": "Tesouro",
+    "c4": "Medalha",
+    "c5": "Coroa",
+    "c6": "Unicórnio",
+    "c7": "Diamante",
+    "c8": "Planeta",
+    "c9": "Arco-íris",
+    "c10": "Raio",
+    "c11": "Coração",
+    "c12": "Livro",
+    "c13": "Poção",
+    "c14": "Esquilo",
+    "c15": "Borboleta",
+    "c16": "Montanha",
+    "c17": "Fogo",
+    "c18": "Lua"
+  },
+  "scores": {
+    "low": "precisa praticar mais",
+    "medium": "nada mal",
+    "good": "bom",
+    "great": "excelente",
+    "perfect": "perfeito"
+  },
+  "modal": {
+    "resetTitle": "Confirmar redefinição? Todos os cartões serão bloqueados novamente.",
+    "confirmButton": "Sim",
+    "cancelButton": "Não"
+  }
+}

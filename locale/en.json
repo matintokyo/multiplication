@@ -1,0 +1,58 @@
+{
+  "app": {
+    "title": "Multiplication Sprint",
+    "description": "Game to practice multiplication tables. Select tables and answer 20 questions in one minute."
+  },
+  "setup": {
+    "title": "Select tables to practice",
+    "startButton": "Start",
+    "treasureTitle": "Treasure Chest",
+    "resetButton": "Reset"
+  },
+  "game": {
+    "timer": "s",
+    "progress": " / ",
+    "problem": "— × —"
+  },
+  "result": {
+    "title": " /  — ",
+    "retryButton": "🔁 Play Again",
+    "backButton": "⬅️ Back",
+    "timeLabel": "Time :",
+    "problemsLabel": "Problems :",
+    "newCardLabel": "New card unlocked :",
+    "allCardsLabel": "All cards are unlocked!"
+  },
+  "cards": {
+    "c1": "Star",
+    "c2": "Rocket",
+    "c3": "Treasure",
+    "c4": "Medal",
+    "c5": "Crown",
+    "c6": "Unicorn",
+    "c7": "Diamond",
+    "c8": "Planet",
+    "c9": "Rainbow",
+    "c10": "Lightning",
+    "c11": "Heart",
+    "c12": "Book",
+    "c13": "Potion",
+    "c14": "Squirrel",
+    "c15": "Butterfly",
+    "c16": "Mountain",
+    "c17": "Fire",
+    "c18": "Moon"
+  },
+  "scores": {
+    "low": "needs more practice",
+    "medium": "Not bad",
+    "good": "Well done",
+    "great": "Great job",
+    "perfect": "Perfect"
+  },
+  "modal": {
+    "resetTitle": "Confirm reset? All cards will be locked again.",
+    "confirmButton": "Yes",
+    "cancelButton": "No"
+  }
+}

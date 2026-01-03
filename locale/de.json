@@ -1,0 +1,58 @@
+{
+  "app": {
+    "title": "Multiplikations-Sprint",
+    "description": "Spiel zum Üben der Multiplikationstabellen. Wähle Tabellen aus und beantworte 20 Fragen in einer Minute."
+  },
+  "setup": {
+    "title": "Wähle Tabellen zum Üben aus",
+    "startButton": "Starten",
+    "treasureTitle": "Schatzkiste",
+    "resetButton": "Zurücksetzen"
+  },
+  "game": {
+    "timer": "s",
+    "progress": " / ",
+    "problem": "— × —"
+  },
+  "result": {
+    "title": " /  — ",
+    "retryButton": "🔁 Nochmal spielen",
+    "backButton": "⬅️ Zurück",
+    "timeLabel": "Zeit :",
+    "problemsLabel": "Probleme :",
+    "newCardLabel": "Neue Karte freigeschaltet :",
+    "allCardsLabel": "Alle Karten sind freigeschaltet!"
+  },
+  "cards": {
+    "c1": "Stern",
+    "c2": "Rakete",
+    "c3": "Schatz",
+    "c4": "Medaille",
+    "c5": "Krone",
+    "c6": "Einhorn",
+    "c7": "Diamant",
+    "c8": "Planet",
+    "c9": "Regenbogen",
+    "c10": "Blitz",
+    "c11": "Herz",
+    "c12": "Buch",
+    "c13": "Trank",
+    "c14": "Eichhörnchen",
+    "c15": "Schmetterling",
+    "c16": "Berg",
+    "c17": "Feuer",
+    "c18": "Mond"
+  },
+  "scores": {
+    "low": "benötigt mehr Übung",
+    "medium": "nicht schlecht",
+    "good": "gut gemacht",
+    "great": "toll",
+    "perfect": "perfekt"
+  },
+  "modal": {
+    "resetTitle": "Zurücksetzen bestätigen? Alle Karten werden erneut gesperrt.",
+    "confirmButton": "Ja",
+    "cancelButton": "Nein"
+  }
+}

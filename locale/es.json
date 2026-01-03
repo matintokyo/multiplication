@@ -1,0 +1,58 @@
+{
+  "app": {
+    "title": "Sprint de Multiplicaciones",
+    "description": "Juego para practicar tablas de multiplicar. Selecciona tablas y responde 20 preguntas en un minuto."
+  },
+  "setup": {
+    "title": "Selecciona las tablas a practicar",
+    "startButton": "Comenzar",
+    "treasureTitle": "Cofre del Tesoro",
+    "resetButton": "Reiniciar"
+  },
+  "game": {
+    "timer": "s",
+    "progress": " / ",
+    "problem": "— × —"
+  },
+  "result": {
+    "title": " /  — ",
+    "retryButton": "🔁 Jugar de Nuevo",
+    "backButton": "⬅️ Atrás",
+    "timeLabel": "Tiempo :",
+    "problemsLabel": "Problemas :",
+    "newCardLabel": "Nueva carta desbloqueada :",
+    "allCardsLabel": "¡Todas las cartas están desbloqueadas!"
+  },
+  "cards": {
+    "c1": "Estrella",
+    "c2": "Cohete",
+    "c3": "Tesoro",
+    "c4": "Medalla",
+    "c5": "Corona",
+    "c6": "Unicornio",
+    "c7": "Diamante",
+    "c8": "Planeta",
+    "c9": "Arcoíris",
+    "c10": "Rayo",
+    "c11": "Corazón",
+    "c12": "Libro",
+    "c13": "Poción",
+    "c14": "Ardilla",
+    "c15": "Mariposa",
+    "c16": "Montaña",
+    "c17": "Fuego",
+    "c18": "Luna"
+  },
+  "scores": {
+    "low": "necesita más práctica",
+    "medium": "No está mal",
+    "good": "Bien hecho",
+    "great": "Gran trabajo",
+    "perfect": "Perfecto"
+  },
+  "modal": {
+    "resetTitle": "¿Confirmar reinicio? Todas las cartas se bloquearán de nuevo.",
+    "confirmButton": "Sí",
+    "cancelButton": "No"
+  }
+}

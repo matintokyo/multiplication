@@ -1,0 +1,58 @@
+{
+  "app": {
+    "title": "掛け算スプリント",
+    "description": "掛け算の九九を練習するゲームです。表を選択して1分間で20問に答えましょう。"
+  },
+  "setup": {
+    "title": "練習する表を選択",
+    "startButton": "開始",
+    "treasureTitle": "宝物庫",
+    "resetButton": "リセット"
+  },
+  "game": {
+    "timer": "秒",
+    "progress": " / ",
+    "problem": "— × —"
+  },
+  "result": {
+    "title": " /  — ",
+    "retryButton": "🔁 やり直す",
+    "backButton": "⬅️ 戻る",
+    "timeLabel": "時間 :",
+    "problemsLabel": "問題 :",
+    "newCardLabel": "新しいカードを解除 :",
+    "allCardsLabel": "すべてのカードが解除されています！"
+  },
+  "cards": {
+    "c1": "星",
+    "c2": "ロケット",
+    "c3": "宝物",
+    "c4": "メダル",
+    "c5": "王冠",
+    "c6": "ユニコーン",
+    "c7": "ダイヤモンド",
+    "c8": "惑星",
+    "c9": "虹",
+    "c10": "稲妻",
+    "c11": "ハート",
+    "c12": "本",
+    "c13": "ポーション",
+    "c14": "リス",
+    "c15": "蝶",
+    "c16": "山",
+    "c17": "火",
+    "c18": "月"
+  },
+  "scores": {
+    "low": "練習が必要です",
+    "medium": "悪くない",
+    "good": "よくできました",
+    "great": "素晴らしい",
+    "perfect": "完璧"
+  },
+  "modal": {
+    "resetTitle": "リセットを確認しますか？すべてのカードが再度ロックされます。",
+    "confirmButton": "はい",
+    "cancelButton": "いいえ"
+  }
+}

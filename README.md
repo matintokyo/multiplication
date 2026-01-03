@@ -1,7 +1,7 @@
 
 # Sprint de Multiplications
 
-Jeu mobile simple pour s'entraîner aux tables de multiplication (HTML/CSS/JS). Ouvrez `index.html` dans un navigateur ou hébergez sur GitHub Pages.
+Jeu mobile simple pour s'entraîner aux tables de multiplication.
 
 Comment ça marche :
 - Choisissez les tables de multiplication à pratiquer (2–9).

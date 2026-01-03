@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Sprint de Multiplications</title>
-  <meta name="description" content="Jeu pour s'entraîner aux tables de multiplications. Selectionnez les tables et répondez à 20 questions en une minute.">
+  <title data-i18n="app.title">Sprint de Multiplications</title>
+  <meta name="description" content="Jeu pour s'entraîner aux tables de multiplications. Selectionnez les tables et répondez à 20 questions en une minute." data-i18n-content="app.description">
   <link rel="stylesheet" href="style.css">
 
   <link rel="icon" type="image/png" href="icon.png">
@@ -13,25 +13,53 @@
 <body>
   <div id="app">
     <main id="setup" class="screen">
-      <p class="lead">Sélectionnez les tables à pratiquer</p>
+      <div class="header-row">
+        <p class="lead" data-i18n="setup.title">Sélectionnez les tables à pratiquer</p>
+        <button id="languageBtn" class="language-btn" aria-label="Select language">
+          🌐
+        </button>
+      </div>
       <div id="tables" class="tables"></div>
       <div class="controls">
-        <button id="startBtn" class="primary" disabled>Démarrer</button>
+      <button id="startBtn" class="primary" disabled data-i18n="setup.startButton">Démarrer</button>
       </div>
       <section id="treasure" class="treasure">
-        <h2>Coffre au trésor</h2>
+        <h2 data-i18n="setup.treasureTitle">Coffre au trésor</h2>
         <div id="cards" class="cards"></div>
       </section>
-      <div class="treasure-reset">
-        <button id="resetCardsBtn" class="reset-btn">Réinitialiser</button>
+      <div class="treasure-footer">
+        <button id="resetCardsBtn" class="reset-btn" data-i18n="setup.resetButton">Réinitialiser</button>
+      </div>
+      
+      <!-- Language selection modal -->
+      <div id="languageModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="languageTitle">
+          <h3 id="languageTitle">Select Language</h3>
+          <div class="language-options">
+            <button class="language-option" data-lang="fr">Français</button>
+            <button class="language-option" data-lang="en">English</button>
+            <button class="language-option" data-lang="es">Español</button>
+            <button class="language-option" data-lang="ja">日本語</button>
+            <button class="language-option" data-lang="zh">中文</button>
+            <button class="language-option" data-lang="hi">हिन्दी</button>
+            <button class="language-option" data-lang="ar">العربية</button>
+            <button class="language-option" data-lang="pt">Português</button>
+            <button class="language-option" data-lang="ru">Русский</button>
+            <button class="language-option" data-lang="bn">বাংলা</button>
+            <button class="language-option" data-lang="de">Deutsch</button>
+          </div>
+          <div class="modal-actions">
+            <button id="closeLanguageModalBtn">Close</button>
+          </div>
+        </div>
       </div>
         <!-- On-screen confirmation modal for resetting cards -->
         <div id="resetModal" class="modal hidden" aria-hidden="true">
           <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
-            <p id="resetTitle">Confirmer la réinitialisation ? Toutes les cartes seront verrouillées à nouveau.</p>
+        <p id="resetTitle" data-i18n="modal.resetTitle">Confirmer la réinitialisation ? Toutes les cartes seront verrouillées à nouveau.</p>
             <div class="modal-actions">
-              <button id="confirmResetBtn" class="primary">Oui</button>
-              <button id="cancelResetBtn">Non</button>
+              <button id="confirmResetBtn" class="primary" data-i18n="modal.confirmButton">Oui</button>
+              <button id="cancelResetBtn" data-i18n="modal.cancelButton">Non</button>
             </div>
           </div>
         </div>
@@ -43,7 +71,7 @@
         <div id="timer" class="chip">60s</div>
         <div id="progress" class="chip">0 / 20</div>
       </div>
-      <div id="problem" class="problem">— × —</div>
+      <div id="problem" class="problem" data-i18n="game.problem">— × —</div>
       <div id="answerDisplay" class="answer"> </div>
       <div id="keypad" class="keypad"></div>
     </section>
@@ -51,8 +79,8 @@
     <section id="result" class="screen hidden">
       <h2 id="resultTitle"></h2>
       <div class="result-actions">
-        <button id="retryBtn" class="game-btn primary">🔁 Rejouer</button>
-        <button id="backSetupBtn" class="game-btn secondary">⬅️ Retour</button>
+        <button id="retryBtn" class="game-btn primary" data-i18n="result.retryButton">🔁 Rejouer</button>
+        <button id="backSetupBtn" class="game-btn secondary" data-i18n="result.backButton">⬅️ Retour</button>
       </div>
       <div id="resultDetails" class="result-details"></div>
     </section>
@@ -61,7 +89,6 @@
     </section>
   </div>
   <script src="script.js"></script>
-  <script data-goatcounter="https://matintokyo.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+  <script data-goatcounter="https://matintokyo.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

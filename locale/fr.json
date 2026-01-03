@@ -1,0 +1,58 @@
+{
+  "app": {
+    "title": "Sprint de Multiplications",
+    "description": "Jeu pour s'entraîner aux tables de multiplications. Selectionnez les tables et répondez à 20 questions en une minute."
+  },
+  "setup": {
+    "title": "Sélectionnez les tables à pratiquer",
+    "startButton": "Démarrer",
+    "treasureTitle": "Coffre au trésor",
+    "resetButton": "Réinitialiser"
+  },
+  "game": {
+    "timer": "s",
+    "progress": " / ",
+    "problem": "— × —"
+  },
+  "result": {
+    "title": " /  — ",
+    "retryButton": "🔁 Rejouer",
+    "backButton": "⬅️ Retour",
+    "timeLabel": "Temps :",
+    "problemsLabel": "Problèmes :",
+    "newCardLabel": "Nouvelle carte débloquée :",
+    "allCardsLabel": "Toutes les cartes sont débloquées !"
+  },
+  "cards": {
+    "c1": "Étoile",
+    "c2": "Fusée",
+    "c3": "Trésor",
+    "c4": "Médaille",
+    "c5": "Couronne",
+    "c6": "Licorne",
+    "c7": "Diamant",
+    "c8": "Planète",
+    "c9": "Niji",
+    "c10": "Éclair",
+    "c11": "Cœur",
+    "c12": "Livre",
+    "c13": "Potion",
+    "c14": "Écureuil",
+    "c15": "Papillon",
+    "c16": "Montagne",
+    "c17": "Feu",
+    "c18": "Lune"
+  },
+  "scores": {
+    "low": "il faut t'entrainer",
+    "medium": "Pas mal",
+    "good": "Bien joué",
+    "great": "Bravo",
+    "perfect": "Parfait"
+  },
+  "modal": {
+    "resetTitle": "Confirmer la réinitialisation ? Toutes les cartes seront verrouillées à nouveau.",
+    "confirmButton": "Oui",
+    "cancelButton": "Non"
+  }
+}

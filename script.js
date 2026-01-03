@@ -1,4 +1,60 @@
 (() => {
+  // i18n system
+  let currentLang = 'fr';
+  let resources = {};
+  
+  function detectLanguage() {
+    const saved = localStorage.getItem('multiplication_lang');
+    if (saved) return saved;
+    const browser = navigator.language || navigator.userLanguage;
+    return browser.startsWith('fr') ? 'fr' : 'en';
+  }
+  
+  async function loadLanguage(lang) {
+    try {
+      const res = await fetch(`locale/${lang}.json`);
+      if (!res.ok) throw new Error('Failed to load language');
+      resources = await res.json();
+      currentLang = lang;
+      localStorage.setItem('multiplication_lang', lang);
+      applyTranslations();
+    } catch (e) {
+      console.warn('Failed to load language', lang, e);
+    }
+  }
+  
+  function t(key) {
+    const parts = key.split('.');
+    let obj = resources;
+    for (const p of parts) {
+      if (!obj || typeof obj[p] === 'undefined') return key;
+      obj = obj[p];
+    }
+    return obj;
+  }
+  
+  function applyTranslations() {
+    // Title and meta
+    const titleEl = document.querySelector('title');
+    if (titleEl) titleEl.textContent = t('app.title');
+    const metaEl = document.querySelector('meta[name="description"]');
+    if (metaEl) metaEl.setAttribute('content', t('app.description'));
+    
+    // Elements with data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      el.textContent = t(el.getAttribute('data-i18n'));
+    });
+    
+    // Elements with data-i18n-content (for meta content)
+    document.querySelectorAll('[data-i18n-content]').forEach(el => {
+      el.setAttribute('content', t(el.getAttribute('data-i18n-content')));
+    });
+    
+    // Re-render treasure cards to update card labels immediately
+    renderTreasure();
+  }
+  
+  // Initialize i18n
   const $ = id => document.getElementById(id);
   const tablesEl = $('tables');
   const startBtn = $('startBtn');
@@ -22,6 +78,9 @@
   const resetModal = $('resetModal');
   const confirmResetBtn = $('confirmResetBtn');
   const cancelResetBtn = $('cancelResetBtn');
+  const languageBtn = $('languageBtn');
+  const languageModal = $('languageModal');
+  const closeLanguageModalBtn = $('closeLanguageModalBtn');
 
   // Global variables
   const NUM_PROBLEMS = 20
@@ -33,27 +92,26 @@
   let startTime = 0;
   let timerId = null;
   let inputBuffer = '';
-  // cartes collectionnables (emoji). Noms en français.
+  // cartes collectionnables (emoji). Noms dynamiques selon langue.
   const CARDS = [
-    {id:'c1',name:'Étoile',emoji:'🌟',color:'#f59e0b'},
-    {id:'c2',name:'Fusée',emoji:'🚀',color:'#06b6d4'},
-    {id:'c3',name:'Trésor',emoji:'🧰',color:'#ef4444'},
-    {id:'c4',name:'Médaille',emoji:'🏅',color:'#10b981'},
-    {id:'c5',name:'Couronne',emoji:'👑',color:'#f97316'},
-    {id:'c6',name:'Licorne',emoji:'🦄',color:'#8b5cf6'},
-    {id:'c7',name:'Diamant',emoji:'💎',color:'#3b82f6'},
-    {id:'c8',name:'Planète',emoji:'🪐',color:'#06b6d4'},
-    {id:'c9',name:'Niji',emoji:'🌈',color:'#22c55e'},
-    {id:'c10',name:'Éclair',emoji:'⚡',color:'#f59e0b'},
-    {id:'c11',name:'Cœur',emoji:'❤️',color:'#ef4444'},
-    {id:'c12',name:'Livre',emoji:'📚',color:'#3b82f6'},
-    {id:'c13',name:'Potion',emoji:'🧪',color:'#a78bfa'},
-    {id:'c14',name:'Écureuil',emoji:'🐿️',color:'#a3a3a3'},
-    {id:'c15',name:'Papillon',emoji:'🦋',color:'#ec4899'},
-    {id:'c16',name:'Montagne',emoji:'🏔️',color:'#64748b'},
-    {id:'c17',name:'Feu',emoji:'🔥',color:'#f97316'},
-    {id:'c18',name:'Lune',emoji:'🌙',color:'#94a3b8'},
-
+    {id:'c1',emoji:'🌟',color:'#f59e0b'},
+    {id:'c2',emoji:'🚀',color:'#06b6d4'},
+    {id:'c3',emoji:'🧰',color:'#ef4444'},
+    {id:'c4',emoji:'🏅',color:'#10b981'},
+    {id:'c5',emoji:'👑',color:'#f97316'},
+    {id:'c6',emoji:'🦄',color:'#8b5cf6'},
+    {id:'c7',emoji:'💎',color:'#3b82f6'},
+    {id:'c8',emoji:'🪐',color:'#06b6d4'},
+    {id:'c9',emoji:'🌈',color:'#22c55e'},
+    {id:'c10',emoji:'⚡',color:'#f59e0b'},
+    {id:'c11',emoji:'❤️',color:'#ef4444'},
+    {id:'c12',emoji:'📚',color:'#3b82f6'},
+    {id:'c13',emoji:'🧪',color:'#a78bfa'},
+    {id:'c14',emoji:'🐿️',color:'#a3a3a3'},
+    {id:'c15',emoji:'🦋',color:'#ec4899'},
+    {id:'c16',emoji:'🏔️',color:'#64748b'},
+    {id:'c17',emoji:'🔥',color:'#f97316'},
+    {id:'c18',emoji:'🌙',color:'#94a3b8'},
   ];
   const STORAGE_KEY = 'multiplication_unlocked_cards_v1';
   let unlocked = new Set();
@@ -92,8 +150,8 @@
       const d = document.createElement('div');
       d.className = 'card' + (unlocked.has(c.id)?'':' locked');
       d.dataset.id = c.id;
-      d.title = c.name;
-      d.innerHTML = `<div class="emoji">${c.emoji}</div><div class="label">${c.name}</div>`;
+      d.title = t(`cards.${c.id}`);
+      d.innerHTML = `<div class="emoji">${c.emoji}</div><div class="label">${t(`cards.${c.id}`)}</div>`;
       cardsEl.appendChild(d);
     });
   }
@@ -217,14 +275,14 @@
   function updateTimer(){
     const elapsed = (performance.now()-startTime)/1000;
     const left = Math.max(0,TIME_LIMIT-elapsed);
-    timerEl.textContent = Math.ceil(left)+ 's';
+    timerEl.textContent = Math.ceil(left)+ t('game.timer');
     if(elapsed>=TIME_LIMIT){
       endGame(true);
     }
   }
 
   function updateProgress(){
-    progressEl.textContent = (current) + ' / ' + NUM_PROBLEMS;
+    progressEl.textContent = (current) + t('game.progress') + NUM_PROBLEMS;
     updateTrack();
   }
 
@@ -340,25 +398,25 @@
     // compute score and label
     const score = problems.reduce((acc,p)=> acc + (p.userAnswer===p.answer?1:0), 0);
     let label = '';
-    if(score < NUM_PROBLEMS/2) label = 'il faut t\'entrainer';
-    else if(score < NUM_PROBLEMS * 0.7) label = 'Pas mal';
-    else if(score < NUM_PROBLEMS * 0.9) label = 'Bien joué';
-    else if(score < NUM_PROBLEMS) label = 'Bravo';
-    else label = 'Parfait';
+    if(score < NUM_PROBLEMS/2) label = t('scores.low');
+    else if(score < NUM_PROBLEMS * 0.7) label = t('scores.medium');
+    else if(score < NUM_PROBLEMS * 0.9) label = t('scores.good');
+    else if(score < NUM_PROBLEMS) label = t('scores.great');
+    else label = t('scores.perfect');
 
-    const head = (!timeOk || timeUp) ? `<div><strong>Temps :</strong> ${elapsed.toFixed(2)}s (limite ${TIME_LIMIT}s)</div>` : '';
-    pendingResult.title = `${score} / ${NUM_PROBLEMS} — ${label}`;
+    const head = (!timeOk || timeUp) ? `<div><strong>${t('result.timeLabel')}</strong> ${elapsed.toFixed(2)}s (limite ${TIME_LIMIT}s)</div>` : '';
+    pendingResult.title = `${score} / ${NUM_PROBLEMS} ${t('result.title')} ${label}`;
 
 
     if(success){
         const unlockedCard = unlockCard();
-        const cardMsg = unlockedCard ? `<div><strong>Nouvelle carte débloquée :</strong> ${unlockedCard.emoji} ${unlockedCard.name}</div>` : `<div><strong>Toutes les cartes sont débloquées !</strong></div>`;
-        pendingResult.html = [head, cardMsg, `<div><strong>Problèmes :</strong>${problemsList}</div>`].join('');
+        const cardMsg = unlockedCard ? `<div><strong>${t('result.newCardLabel')}</strong> ${unlockedCard.emoji} ${t(`cards.${unlockedCard.id}`)}</div>` : `<div><strong>${t('result.allCardsLabel')}</strong></div>`;
+        pendingResult.html = [head, cardMsg, `<div><strong>${t('result.problemsLabel')}</strong>${problemsList}</div>`].join('');
         pendingResult.unlockedCard = unlockedCard ? unlockedCard.id : null;
     } else {
         pendingResult.unlockedCard = null;
         const errors = problems.map((p,i)=>({i,p})).filter(o=>o.p.userAnswer!==o.p.answer);
-        pendingResult.html = [head, `<div><strong>Problèmes :</strong>${problemsList}</div>`].join('');
+        pendingResult.html = [head, `<div><strong>${t('result.problemsLabel')}</strong>${problemsList}</div>`].join('');
     }
 
     // Show animation for 3 seconds then show result
@@ -481,17 +539,73 @@
     showSetup();
   });
 
+  // Language switcher
+  function setupLanguageSwitcher(){
+    console.log('Setting up language switcher', {languageBtn, languageModal});
+    if(!languageBtn || !languageModal) {
+      console.error('Language switcher elements not found');
+      return;
+    }
+    languageBtn.addEventListener('click', (e)=>{
+      console.log('Language button clicked');
+      e.stopPropagation();
+      languageModal.classList.remove('hidden');
+      languageModal.setAttribute('aria-hidden','false');
+    });
+    document.addEventListener('click', (e)=>{
+      if(!languageBtn.contains(e.target) && !languageModal.contains(e.target)){
+        languageModal.classList.add('hidden');
+        languageModal.setAttribute('aria-hidden','true');
+      }
+    });
+    languageModal.querySelectorAll('.language-option').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const lang = btn.getAttribute('data-lang');
+        console.log('Switching to language:', lang);
+        loadLanguage(lang);
+        languageModal.classList.add('hidden');
+        languageModal.setAttribute('aria-hidden','true');
+      });
+    });
+    if(closeLanguageModalBtn){
+      closeLanguageModalBtn.addEventListener('click', ()=>{
+        languageModal.classList.add('hidden');
+        languageModal.setAttribute('aria-hidden','true');
+      });
+    }
+    languageModal.addEventListener('click', (e)=>{
+      if(e.target === languageModal){
+        languageModal.classList.add('hidden');
+        languageModal.setAttribute('aria-hidden','true');
+      }
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        if(languageModal && !languageModal.classList.contains('hidden')){
+          languageModal.classList.add('hidden');
+          languageModal.setAttribute('aria-hidden','true');
+        }
+      }
+    });
+  }
+
   // init
-  makeTables();
-  loadUnlocked();
-  renderTreasure();
-  updateStartState();
-  makeKeypad();
-  if(resetCardsBtn) resetCardsBtn.addEventListener('click', resetUnlocked);
-  // modal buttons
-  if(confirmResetBtn) confirmResetBtn.addEventListener('click', performReset);
-  if(cancelResetBtn) cancelResetBtn.addEventListener('click', hideResetModal);
-  if(resetModal) resetModal.addEventListener('click', (e)=>{ if(e.target===resetModal) hideResetModal(); });
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ if(resetModal && !resetModal.classList.contains('hidden')) hideResetModal(); } });
-  showSetup();
+  const initialLang = detectLanguage();
+  // Immediately hide setup until language is loaded to prevent flash
+  setupEl.classList.add('hidden');
+  loadLanguage(initialLang).then(()=>{
+    makeTables();
+    loadUnlocked();
+    renderTreasure();
+    updateStartState();
+    makeKeypad();
+    if(resetCardsBtn) resetCardsBtn.addEventListener('click', resetUnlocked);
+    // modal buttons
+    if(confirmResetBtn) confirmResetBtn.addEventListener('click', performReset);
+    if(cancelResetBtn) cancelResetBtn.addEventListener('click', hideResetModal);
+    if(resetModal) resetModal.addEventListener('click', (e)=>{ if(e.target===resetModal) hideResetModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ if(resetModal && !resetModal.classList.contains('hidden')) hideResetModal(); } });
+    setupLanguageSwitcher();
+    showSetup();
+  });
 })();
